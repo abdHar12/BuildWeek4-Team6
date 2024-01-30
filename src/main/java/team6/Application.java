@@ -1,16 +1,12 @@
 package team6;
 
-import team6.DAO.BookableDAO;
-import team6.DAO.SellersDAO;
-import team6.DAO.UserDAO;
+import team6.DAO.*;
 import team6.abstractclasses.Bookable;
 import team6.abstractclasses.Sellers;
-import team6.entities.LicensedSeller;
-import team6.entities.Subscription;
-import team6.entities.User;
-import team6.entities.VendingMachine;
+import team6.entities.*;
 import team6.enums.ActiveEnum;
 import team6.enums.SubDuration;
+import team6.enums.VehicleType;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -26,6 +22,8 @@ public class Application {
         BookableDAO bookableDAO = new BookableDAO(em);
         UserDAO userDAO = new UserDAO(em);
         SellersDAO sellersDAO = new SellersDAO(em);
+        VehicleDAO vehicleDAO = new VehicleDAO(em);
+        MaintenanceDAO maintenanceDAO = new MaintenanceDAO(em);
 
         System.out.println("creazione utente e bookable");
 
@@ -37,14 +35,20 @@ public class Application {
 
         Bookable subProva = new Subscription(80.50, LocalDate.now(), sellerProva, SubDuration.MONTHLY, userProva);
 
+        Vehicle vehicleProva = new Vehicle(VehicleType.BUS);
 
+        Maintenance maintenanceProva = new Maintenance("cambio gomme", LocalDate.now(), vehicleProva);
+        Maintenance maintenanceProvaDue = new Maintenance("cambio gomme due", LocalDate.now(), vehicleProva);
 
         userDAO.save(userProva);
-
+        vehicleDAO.save(vehicleProva);
         sellersDAO.save(sellerProva);
         sellersDAO.save(sellerDue);
         bookableDAO.save(subProva);
-
+        maintenanceDAO.save(maintenanceProva);
+        maintenanceDAO.save(maintenanceProvaDue);
+       // maintenanceDAO.getMaintencanceList(vehicleProva);
+        System.out.println(maintenanceDAO.getMaintencanceList(vehicleProva));
         System.out.println("Hello World!");
     }
 }

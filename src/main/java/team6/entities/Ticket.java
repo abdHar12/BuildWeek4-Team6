@@ -3,9 +3,7 @@ package team6.entities;
 import team6.abstractclasses.Bookable;
 import team6.abstractclasses.Sellers;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 
@@ -18,6 +16,12 @@ public class Ticket extends Bookable {
 
     @Column(nullable = false)
     protected boolean valid;
+
+
+    @ManyToOne
+    @JoinColumn(name = "vehicle_id")
+    private Vehicle vehicle;
+
 
     public Ticket() {}
 

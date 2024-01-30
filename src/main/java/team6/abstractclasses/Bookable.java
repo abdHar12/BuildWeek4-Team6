@@ -17,11 +17,8 @@ public abstract class Bookable {
     @Column(nullable = false)
     protected double price;
 
-
     @Column(name = "date_sell",nullable = false)
     protected LocalDate dateSell;
-
-
 
     @ManyToOne
     @JoinColumn(name = "place_sell")
