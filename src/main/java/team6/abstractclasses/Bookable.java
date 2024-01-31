@@ -5,7 +5,8 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "type")
 @Table(name = "bookables")
 public abstract class Bookable {
 
@@ -30,8 +31,7 @@ public abstract class Bookable {
     public Bookable (){}
 
 
-    public Bookable(double price, LocalDate dateSell, Sellers placeSell) {
-        this.price = price;
+    public Bookable( LocalDate dateSell, Sellers placeSell) {
         this.dateSell = dateSell;
         this.placeSell = placeSell;
 

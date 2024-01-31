@@ -5,7 +5,9 @@ import team6.enums.VehicleState;
 import team6.enums.VehicleType;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Vehicle {
@@ -18,7 +20,7 @@ public class Vehicle {
 
     private int numberOfSeats;
 
-@Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     private VehicleState state;
 
     @OneToMany(mappedBy = "vehicle")
@@ -41,14 +43,28 @@ public class Vehicle {
 
     public Vehicle(VehicleType type) {
         this.type = type;
-        if (this.type.toString() == "TRAM" )
-        {
+        if (Objects.equals(this.type.toString(), "TRAM")) {
             this.numberOfSeats = 40;
-        } else if (this.type.toString() == "BUS") {
+        } else if (Objects.equals(this.type.toString(), "BUS")) {
             this.numberOfSeats = 70;
         }
         this.state = VehicleState.ACTIVE;
     }
+
+
+//    public void setTicketsList(List<Ticket> tickets) {
+//        if (Objects.equals(this.state.toString(), "ACTIVE")) {
+//            this.tickets = tickets;
+//            this.tickets.forEach(ticket -> {
+//                ticket.setDateSell(LocalDate.now());
+//            //   ticket.setVehicle(this);
+//            });
+//
+//            System.out.println("Biglietto vidimato correttamente !!");
+//        } else if (Objects.equals(this.state.toString(), "IN_MAINTENANCE")) {
+//            System.out.println("Il veicolo è in manutenzione, non puoi salire !");
+//        }
+//    }
 
     public long getId() {
         return id;
@@ -83,8 +99,15 @@ public class Vehicle {
         return tickets;
     }
 
-    public void setTickets(List<Ticket> tickets) {
+    public void setTickets(List<Ticket> tickets, LocalDate date) {
         this.tickets = tickets;
+
+        tickets.forEach(ticket -> {
+            ticket.setDateValidation(date);
+            ticket.setValid(false);
+            ticket.setVehicle(this);
+        });
+
     }
 
     public List<Maintenance> getMaintenanceList() {

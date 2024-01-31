@@ -8,10 +8,11 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "subscriptions")
+
 public class Subscription extends Bookable {
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private SubDuration duration;
 
     @Column(name = "date_expiration", nullable = false)
@@ -28,16 +29,19 @@ public class Subscription extends Bookable {
     public Subscription() {
     }
 
-    public Subscription(double price, LocalDate dateSell, Sellers placeSell, SubDuration duration, User user) {
-        super(price, dateSell, placeSell);
+    public Subscription(LocalDate dateSell, Sellers placeSell, SubDuration duration, User user) {
+        super(dateSell, placeSell);
         this.duration = duration;
         this.user = user;
         this.valid = true;
-        if (duration.equals(SubDuration.WEEKLY)){
+        if (duration.equals(SubDuration.WEEKLY)) {
             this.dateExpiration = dateSell.plusWeeks(1);
+            this.price = 30.0;
         } else if (duration.equals(SubDuration.MONTHLY)) {
             this.dateExpiration = dateSell.plusMonths(1);
+            this.price = 60.0;
         }
+
     }
 
     public SubDuration getDuration() {
@@ -84,6 +88,6 @@ public class Subscription extends Bookable {
                 ", price=" + price +
                 ", dateSell=" + dateSell +
                 ", placeSell=" + placeSell +
-                "} " ;
+                "} ";
     }
 }

@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 
 @Entity
-@Table(name = "tickets")
+
 public class Ticket extends Bookable {
 
     @Column(name = "date_validation")
@@ -23,12 +23,16 @@ public class Ticket extends Bookable {
     private Vehicle vehicle;
 
 
-    public Ticket() {}
-
-    public Ticket(double price, LocalDate dateSell, Sellers placeSell,  boolean valid  ) {
-        super(price, dateSell, placeSell);
-        this.valid = true;
+    public Ticket() {
     }
+
+    public Ticket(double price, LocalDate dateSell, Sellers placeSell) {
+        super( dateSell, placeSell);
+        this.valid = true;
+        this.price=price;
+    }
+
+
 
     public LocalDate getDateValidation() {
         return dateValidation;
@@ -36,6 +40,22 @@ public class Ticket extends Bookable {
 
     public void setDateValidation(LocalDate dateValidation) {
         this.dateValidation = dateValidation;
+    }
+
+    public Vehicle getVehicle() {
+        return vehicle;
+    }
+
+    public void setVehicle(Vehicle vehicle) {
+        this.vehicle = vehicle;
+    }
+
+    public boolean isValid() {
+        return valid;
+    }
+
+    public void setValid(boolean valid) {
+        this.valid = valid;
     }
 
     @Override
