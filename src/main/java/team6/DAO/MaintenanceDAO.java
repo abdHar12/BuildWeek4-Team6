@@ -5,6 +5,7 @@ import team6.entities.Vehicle;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import java.time.LocalDate;
 import java.util.List;
 
 public class MaintenanceDAO {
@@ -44,6 +45,14 @@ public class MaintenanceDAO {
         } else {
             System.out.println("Ops! non ho trovato nessun maintenance tramite il codice ID che mi hai fornito");
         }
+    }
+
+    public void setDateOfEndMaintenance(Maintenance maintenance, LocalDate date) {
+        EntityTransaction transaction = em.getTransaction();
+        transaction.begin();
+        maintenance.setDateOfEndMaintenance(date);
+        transaction.commit();
+        System.out.println("Il mezzo può tornare sulla tratta");
     }
 
 public List<Maintenance> getMaintencanceList (Vehicle vehicle){

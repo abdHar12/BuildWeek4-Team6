@@ -18,6 +18,7 @@ public class Vehicle {
 
     private int numberOfSeats;
 
+@Enumerated(EnumType.STRING)
     private VehicleState state;
 
     @OneToMany(mappedBy = "vehicle")

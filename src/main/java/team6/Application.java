@@ -37,16 +37,24 @@ public class Application {
 
         Vehicle vehicleProva = new Vehicle(VehicleType.BUS);
 
-        Maintenance maintenanceProva = new Maintenance("cambio gomme", LocalDate.now(), vehicleProva);
-        Maintenance maintenanceProvaDue = new Maintenance("cambio gomme due", LocalDate.now(), vehicleProva);
 
+
+        Maintenance maintenanceProvaDue = new Maintenance("cambio gomme due", LocalDate.now().minusDays(5), vehicleProva);
         userDAO.save(userProva);
         vehicleDAO.save(vehicleProva);
         sellersDAO.save(sellerProva);
         sellersDAO.save(sellerDue);
         bookableDAO.save(subProva);
-        maintenanceDAO.save(maintenanceProva);
+
+
         maintenanceDAO.save(maintenanceProvaDue);
+        maintenanceDAO.setDateOfEndMaintenance(maintenanceProvaDue, LocalDate.now());
+        Maintenance maintenanceProvaTre = new Maintenance("cambio gomme tre", LocalDate.now().minusDays(3), vehicleProva);
+        maintenanceDAO.save(maintenanceProvaTre);
+
+//        maintenanceDAO.save(maintenanceProvaTre);
+
+//        maintenanceDAO.setDateOfEndMaintenance(maintenanceProvaDue, LocalDate.now());
        // maintenanceDAO.getMaintencanceList(vehicleProva);
         System.out.println(maintenanceDAO.getMaintencanceList(vehicleProva));
         System.out.println("Hello World!");

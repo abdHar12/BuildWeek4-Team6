@@ -28,10 +28,14 @@ public class Maintenance {
     }
 
     public Maintenance(String typeMaintenance, LocalDate dateOfStartMaintenance, Vehicle vehicle) {
+        this.vehicleMain = vehicle;
+        if(vehicleMain.getState().equals(VehicleState.ACTIVE)) {
         this.typeMaintenance = typeMaintenance;
         this.dateOfStartMaintenance = dateOfStartMaintenance;
-        this.vehicleMain = vehicle;
         this.vehicleMain.setState(VehicleState.IN_MAINTENANCE);
+        } else {
+            System.err.println("Il veicolo è già in manutenzione");}
+
     }
 
     public long getId() {
