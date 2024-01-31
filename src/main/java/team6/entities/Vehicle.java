@@ -27,6 +27,15 @@ public class Vehicle {
     @OneToMany(mappedBy = "vehicleMain")
     private List<Maintenance> maintenanceList;
 
+
+    @ManyToMany
+    @JoinTable(name = "vehicle_route", // DEFINIAMO COME SARA' FATTA LA JUNCTION TABLE
+            joinColumns = @JoinColumn(name = "vehicle_id"), // DEFINIAMO I NOMI DELLE SUE COLONNE
+            inverseJoinColumns = @JoinColumn(name = "route_id")
+    )
+    private List<Route> routeList;
+
+
     public Vehicle() {
     }
 

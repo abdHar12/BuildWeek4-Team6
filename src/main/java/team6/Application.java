@@ -24,6 +24,7 @@ public class Application {
         SellersDAO sellersDAO = new SellersDAO(em);
         VehicleDAO vehicleDAO = new VehicleDAO(em);
         MaintenanceDAO maintenanceDAO = new MaintenanceDAO(em);
+        RouteDAO routeDAO = new RouteDAO(em);
 
         System.out.println("creazione utente e bookable");
 
@@ -37,6 +38,7 @@ public class Application {
 
         Vehicle vehicleProva = new Vehicle(VehicleType.BUS);
 
+        Route routeProva = new Route("Marano Vincentino", "Bassano del Grappa", 25);
 
 
         Maintenance maintenanceProvaDue = new Maintenance("cambio gomme due", LocalDate.now().minusDays(5), vehicleProva);
@@ -45,7 +47,7 @@ public class Application {
         sellersDAO.save(sellerProva);
         sellersDAO.save(sellerDue);
         bookableDAO.save(subProva);
-
+        routeDAO.save(routeProva);
 
         maintenanceDAO.save(maintenanceProvaDue);
         maintenanceDAO.setDateOfEndMaintenance(maintenanceProvaDue, LocalDate.now());
