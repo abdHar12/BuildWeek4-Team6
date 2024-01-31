@@ -1,5 +1,7 @@
 package team6.entities;
 
+import team6.enums.VehicleState;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -29,6 +31,7 @@ public class Maintenance {
         this.typeMaintenance = typeMaintenance;
         this.dateOfStartMaintenance = dateOfStartMaintenance;
         this.vehicleMain = vehicle;
+        this.vehicleMain.setState(VehicleState.IN_MAINTENANCE);
     }
 
     public long getId() {
@@ -57,6 +60,7 @@ public class Maintenance {
 
     public void setDateOfEndMaintenance(LocalDate dateOfEndMaintenance) {
         this.dateOfEndMaintenance = dateOfEndMaintenance;
+        this.vehicleMain.setState(VehicleState.ACTIVE);
     }
 
     public Vehicle getVehicle() {
