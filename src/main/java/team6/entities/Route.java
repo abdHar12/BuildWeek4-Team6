@@ -12,15 +12,15 @@ public class Route {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-@Column(name = "route_name")
+    @Column(name = "route_name")
     private String routeName;
 
-@Transient
+    @Transient
     private String departure;
-@Transient
+    @Transient
     private String arrivals;
 
-@Column(name = "duration_minutes")
+    @Column(name = "duration_minutes")
     private int durationMinutes;
 
     @ManyToMany
@@ -28,8 +28,6 @@ public class Route {
             joinColumns = @JoinColumn(name = "route_id"), // DEFINIAMO I NOMI DELLE SUE COLONNE
             inverseJoinColumns = @JoinColumn(name = "vehicle_id"))
     private List<Vehicle> vehicleList;
-
-
 
 
 //CONSTRUCTORS

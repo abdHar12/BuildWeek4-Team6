@@ -13,10 +13,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Locale;
-import java.util.Random;
+import java.util.*;
 
 public class Application {
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("u4bw");
@@ -55,74 +52,73 @@ public class Application {
             userDAO.save(user);
 
             Random random = new Random();
-            int numRandom = random.nextInt( 2)+1;
+            int numRandom = random.nextInt(2) + 1;
 
 
             Bookable sub = new Subscription(LocalDate.of(faker.number().numberBetween(2021, 2024), faker.number().numberBetween(1, 12), faker.number().numberBetween(1, 30)), sellersDAO.findById(faker.number().numberBetween(1, nSeller * 2)), numRandom == 1 ? SubDuration.WEEKLY : SubDuration.MONTHLY, user);
             bookableDAO.save(sub);
         }
 
-//        //CREO SUBSCRIPTION
-//        for (int i = 1; i < nUser; i++) {
+
+        //CREO TICKETS
+
+        int nTickets = 50;
+
+        List<Sellers> allSellers = sellersDAO.getAllSellers();
+
+        for (int i = 0; i <= nTickets; i++) {
+
+            Random random = new Random();
+
+
+            Bookable ticket = new Ticket(faker.number().randomDouble(2, 3, 12), LocalDate.of(faker.number().numberBetween(2021, 2024), faker.number().numberBetween(1, 12), faker.number().numberBetween(1, 30)), allSellers.get(random.nextInt(0, allSellers.size())));
+            bookableDAO.save(ticket);
+        }
+
+        //CREO VEICOLI
+
+        int nVehicles = 40;
+
+        for (int i = 0; i < nVehicles; i++) {
+
+            Vehicle vehicleTram = new Vehicle(VehicleType.TRAM);
+            Vehicle vehicleBus = new Vehicle(VehicleType.BUS);
+            vehicleDAO.save(vehicleTram);
+            vehicleDAO.save(vehicleBus);
+            System.out.println("ciaooooooooooooooooooooooooooooooooooo");
+        }
+
+
+        //CREO LE ROTTE
+
+        int nRoutes = nVehicles ;
+
+        for (int i = 0; i < nRoutes; i++) {
+
+            Random random = new Random();
+
+            List<Vehicle> vehicleList = vehicleDAO.getAllVehicles();
+
+            Route route = new Route(faker.address().city(), faker.address().city(), random.nextInt(10, 300));
+            route.setVehicleList(new ArrayList<>(Arrays.asList(vehicleList.get(i), vehicleList.get(i + nRoutes))));
+            routeDAO.save(route);
+        }
+
+
+//        Maintenance maintenanceProvaDue = new Maintenance("cambio gomme due", LocalDate.now().minusDays(5), vehicleProva);
+//        maintenanceDAO.save(maintenanceProvaDue);
 //
-//        }
-
-        System.out.println("creazione utente e bookable");
-
-//        User userProva = new User("Cosmin", "Siffredi", LocalDate.now());
-//        userDAO.save(userProva);
+//        maintenanceDAO.setDateOfEndMaintenance(maintenanceProvaDue, LocalDate.now());
 //
-//        Sellers sellerProva = new LicensedSeller("Roma", "Tabacchino di Ruane");
-//        sellersDAO.save(sellerProva);
+//        Maintenance maintenanceProvaTre = new Maintenance("cambio gomme tre", LocalDate.now().minusDays(3), vehicleProva);
+//        maintenanceDAO.save(maintenanceProvaTre);
 //
-//        Sellers sellerDue = new VendingMachine("Trento", ActiveEnum.ACTIVE);
-//        sellersDAO.save(sellerDue);
 //
-//        Bookable subProva = new Subscription(LocalDate.now(), sellerProva, SubDuration.MONTHLY, userProva);
-//        bookableDAO.save(subProva);
-
-        Vehicle vehicleProva = new Vehicle(VehicleType.BUS);
-        vehicleDAO.save(vehicleProva);
-
-        Vehicle vehicleDue = new Vehicle(VehicleType.TRAM);
-        vehicleDAO.save(vehicleDue);
-
-        Route routeProva = new Route("Marano Vincentino", "Bassano del Grappa", 25);
-        routeDAO.save(routeProva);
-
-
-        //creo 3 tickets
-//        Ticket tck1 = new Ticket(30.20, LocalDate.now(), sellerProva);
-//        Ticket tck2 = new Ticket(10.20, LocalDate.now(), sellerDue);
-//        Ticket tck3 = new Ticket(20.20, LocalDate.now(), sellerProva);
-//        bookableDAO.save(tck1);
-//        bookableDAO.save(tck3);
-//        bookableDAO.save(tck2);
-
-
-        Maintenance maintenanceProvaDue = new Maintenance("cambio gomme due", LocalDate.now().minusDays(5), vehicleProva);
-        maintenanceDAO.save(maintenanceProvaDue);
-
-        maintenanceDAO.setDateOfEndMaintenance(maintenanceProvaDue, LocalDate.now());
-
-        Maintenance maintenanceProvaTre = new Maintenance("cambio gomme tre", LocalDate.now().minusDays(3), vehicleProva);
-        maintenanceDAO.save(maintenanceProvaTre);
-        routeProva.setVehicleList(new ArrayList<>(Arrays.asList(vehicleProva)));
-
-        routeDAO.save(routeProva);
-        System.out.println("hellooooooo");
-
-
 //        vehicleProva.setTickets(new ArrayList<>(Arrays.asList(tck1, tck2)), LocalDate.now());
 //        vehicleDue.setTickets(new ArrayList<>(Arrays.asList(tck3)), LocalDate.now());
-//
-//        bookableDAO.save(tck1);
-//        bookableDAO.save(tck2);
-//        bookableDAO.save(tck3);
-//        vehicleDAO.save(vehicleProva);
-//        vehicleDAO.save(vehicleDue);
 
-        System.out.println(maintenanceDAO.getMaintencanceList(vehicleProva));
+
+
         System.out.println("Hello World!");
     }
 }

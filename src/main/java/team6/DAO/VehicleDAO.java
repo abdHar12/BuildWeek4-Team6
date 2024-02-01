@@ -1,9 +1,12 @@
 package team6.DAO;
 
 import team6.entities.Vehicle;
+import team6.expetions.ElementsNotFound;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.TypedQuery;
+import java.util.List;
 
 public class VehicleDAO {
 
@@ -50,5 +53,12 @@ public class VehicleDAO {
         }
     }
 
+
+    public List<Vehicle> getAllVehicles() throws ElementsNotFound {
+        TypedQuery<Vehicle> getAllVehicles=em.createNamedQuery("getAllVehicles", Vehicle.class);
+        List<Vehicle> elements= getAllVehicles.getResultList();
+        if(elements.isEmpty()) throw new ElementsNotFound();
+        return elements;
+    }
 
 }

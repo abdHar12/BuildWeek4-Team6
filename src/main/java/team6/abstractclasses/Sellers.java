@@ -6,6 +6,7 @@ import java.util.List;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "seller_type")
+@NamedQuery(name="getAllSellers", query="SELECT s FROM Sellers s")
 public abstract class   Sellers {
 
 @Id

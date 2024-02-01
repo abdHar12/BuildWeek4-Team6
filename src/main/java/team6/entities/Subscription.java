@@ -8,14 +8,14 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-
+@DiscriminatorValue("subscriptions")
 public class Subscription extends Bookable {
 
-    @Column(nullable = false)
+
     @Enumerated(EnumType.STRING)
     private SubDuration duration;
 
-    @Column(name = "date_expiration", nullable = false)
+    @Column(name = "date_expiration")
     private LocalDate dateExpiration;
 
 
@@ -23,7 +23,7 @@ public class Subscription extends Bookable {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(nullable = false)
+
     protected boolean valid;
 
     public Subscription() {

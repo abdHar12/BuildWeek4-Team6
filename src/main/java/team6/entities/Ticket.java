@@ -8,13 +8,13 @@ import java.time.LocalDate;
 
 
 @Entity
-
+@DiscriminatorValue("tickets")
 public class Ticket extends Bookable {
 
     @Column(name = "date_validation")
     private LocalDate dateValidation;
 
-    @Column(nullable = false)
+
     protected boolean valid;
 
 

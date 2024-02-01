@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
+@NamedQuery(name="getAllVehicles", query="SELECT v FROM Vehicle v")
 public class Vehicle {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
