@@ -29,11 +29,15 @@ public class Subscription extends Bookable {
     public Subscription() {
     }
 
-    public Subscription(LocalDate dateSell, Sellers placeSell, SubDuration duration, User user) {
+    public Subscription(LocalDate dateSell, Sellers placeSell, SubDuration duration, User user) throws UnsupportedOperationException {
         super(dateSell, placeSell);
+        if (user.getDateExpired().isBefore(LocalDate.now())) {
+            throw new UnsupportedOperationException();
+        }
+
         this.duration = duration;
         this.user = user;
-        this.valid=true;
+        this.valid = true;
         if (duration.equals(SubDuration.WEEKLY)) {
             this.dateExpiration = dateSell.plusWeeks(1);
             this.price = 30.0;
@@ -42,9 +46,10 @@ public class Subscription extends Bookable {
             this.price = 60.0;
         }
 
-        if(this.dateExpiration.isBefore(LocalDate.now())){
+        if (this.dateExpiration.isBefore(LocalDate.now())) {
             this.valid = false;
         }
+
 
     }
 

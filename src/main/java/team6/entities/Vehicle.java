@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@NamedQuery(name="getAllVehicles", query="SELECT v FROM Vehicle v")
+@NamedQuery(name = "getAllVehicles", query = "SELECT v FROM Vehicle v")
 public class Vehicle {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -101,13 +101,24 @@ public class Vehicle {
     }
 
     public void setTickets(List<Ticket> tickets, LocalDate date) {
-        this.tickets = tickets;
+        if (Objects.equals(this.state.toString(), "ACTIVE")) {
 
-        tickets.forEach(ticket -> {
-            ticket.setDateValidation(date);
-            ticket.setValid(false);
-            ticket.setVehicle(this);
-        });
+            boolean allTicketsValid = tickets.stream().allMatch(ticket -> ticket.isValid());
+
+            if (allTicketsValid) {
+                this.tickets = tickets;
+
+                tickets.forEach(ticket -> {
+                    ticket.setDateValidation(date);
+                    ticket.setValid(false);
+                    ticket.setVehicle(this);
+                });
+            } else {
+                System.out.println("Attenzione, uno o più dei biglietti che vogliono essere vidimati non è valido !");
+            }
+        } else {
+            System.out.println("Il mezzo è in manutenzione, NON puoi vidimare il tuo biglietto per questo veicolo !");
+        }
 
     }
 
