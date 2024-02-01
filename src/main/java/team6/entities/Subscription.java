@@ -43,7 +43,6 @@ public class Subscription extends Bookable {
         }
 
         if(this.dateExpiration.isBefore(LocalDate.now())){
-
             this.valid = false;
         }
 

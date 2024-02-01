@@ -9,6 +9,7 @@ import java.time.LocalDate;
 
 @Entity
 @DiscriminatorValue("tickets")
+@NamedQuery(name="getAllTickets", query="SELECT t FROM Ticket t")
 public class Ticket extends Bookable {
 
     @Column(name = "date_validation")
@@ -57,6 +58,10 @@ public class Ticket extends Bookable {
     public void setValid(boolean valid) {
         this.valid = valid;
     }
+
+
+
+
 
     @Override
     public String toString() {

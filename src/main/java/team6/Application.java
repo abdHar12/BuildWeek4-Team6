@@ -29,10 +29,10 @@ public class Application {
         MaintenanceDAO maintenanceDAO = new MaintenanceDAO(em);
         RouteDAO routeDAO = new RouteDAO(em);
 
-        //SETTO IL FAKER
+        //SETTO IL FAKER -----------------------------------------------------------------------------------------------
         Faker faker = new Faker(Locale.ITALY);
 
-        //CREO SELLER
+        //CREO SELLER --------------------------------------------------------------------------------------------------
         int nSeller = 3;
 
         for (int i = 1; i <= nSeller; i++) {
@@ -43,7 +43,7 @@ public class Application {
             sellersDAO.save(machine);
         }
 
-        //CREO USER CON LA SUA SUB
+        //CREO USER CON LA SUA SUB -------------------------------------------------------------------------------------
         int nUser = 20;
 
         for (int i = 1; i <= nUser; i++) {
@@ -54,12 +54,12 @@ public class Application {
             int numRandom = random.nextInt(2) + 1;
 
 
-            Bookable sub = new Subscription(LocalDate.of(faker.number().numberBetween(2021, 2024), faker.number().numberBetween(1, 12), faker.number().numberBetween(1, 30)), sellersDAO.findById(faker.number().numberBetween(1, nSeller * 2)), numRandom == 1 ? SubDuration.WEEKLY : SubDuration.MONTHLY, user);
+            Bookable sub = new Subscription(LocalDate.of(faker.number().numberBetween(2024, 2024), faker.number().numberBetween(1, 2), faker.number().numberBetween(1, 30)), sellersDAO.findById(faker.number().numberBetween(1, nSeller * 2)), numRandom == 1 ? SubDuration.WEEKLY : SubDuration.MONTHLY, user);
             bookableDAO.save(sub);
         }
 
 
-        //CREO TICKETS
+        //CREO TICKETS -------------------------------------------------------------------------------------------------
 
         int nTickets = 50;
 
@@ -74,7 +74,7 @@ public class Application {
             bookableDAO.save(ticket);
         }
 
-        //CREO VEICOLI
+        //CREO VEICOLI -------------------------------------------------------------------------------------------------
 
         int nVehicles = 40;
 
@@ -87,9 +87,9 @@ public class Application {
         }
 
 
-        //CREO LE ROTTE
+        //CREO LE ROTTE ------------------------------------------------------------------------------------------------
 
-        int nRoutes = nVehicles ;
+        int nRoutes = nVehicles;
 
         for (int i = 0; i < nRoutes; i++) {
 
@@ -103,9 +103,22 @@ public class Application {
         }
 
 
-        //SETTO DEI TICKET CHE VIDIMO SU UN DETERMIANTO MEZZO
-//        Vehicle vehicleForTicket= vehicleDAO.findById(3);
-//        vehicleForTicket.setTickets(new ArrayList<>(Arrays.asList()));
+        //SETTO DEI TICKET CHE VIDIMO SU UN DETERMIANTO MEZZO ----------------------------------------------------------
+
+        //lista di tickets
+        List<Ticket> ticketsList = bookableDAO.getAllTickets();
+
+        //veicolo sul quale vogliamo vidimare i tickets tramite id
+        Vehicle vehicleForTicket = vehicleDAO.findById(3);
+
+        //creo lista di biglietti da vidimare tramite indice nella lista presa in precedenza
+        List<Ticket> ticketUsing = new ArrayList<>(Arrays.asList(ticketsList.get(1), ticketsList.get(2), ticketsList.get(3)));
+
+        //vidimo i tickets
+        vehicleForTicket.setTickets(ticketUsing, LocalDate.now());
+
+        //salvo
+        vehicleDAO.save(vehicleForTicket);
 
 
 //        Maintenance maintenanceProvaDue = new Maintenance("cambio gomme due", LocalDate.now().minusDays(5), vehicleProva);
@@ -115,12 +128,6 @@ public class Application {
 //
 //        Maintenance maintenanceProvaTre = new Maintenance("cambio gomme tre", LocalDate.now().minusDays(3), vehicleProva);
 //        maintenanceDAO.save(maintenanceProvaTre);
-//
-//
-//        vehicleProva.setTickets(new ArrayList<>(Arrays.asList(tck1, tck2)), LocalDate.now());
-//        vehicleDue.setTickets(new ArrayList<>(Arrays.asList(tck3)), LocalDate.now());
-
-
 
         System.out.println("Hello World!");
     }

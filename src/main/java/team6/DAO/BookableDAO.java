@@ -1,9 +1,13 @@
 package team6.DAO;
 
 import team6.abstractclasses.Bookable;
+import team6.entities.Ticket;
+import team6.expetions.ElementsNotFound;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.TypedQuery;
+import java.util.List;
 
 public class BookableDAO {
 
@@ -48,6 +52,19 @@ public class BookableDAO {
         } else {
             System.out.println("Ops! non ho trovato nessun biglietto / abbonamento tramite il codice ID che mi hai fornito ");
         }
+    }
+
+
+    public List<Ticket> getAllTickets() throws ElementsNotFound {
+        TypedQuery<Ticket> getAllTickets=em.createNamedQuery("getAllTickets", Ticket.class);
+        List<Ticket> elements= getAllTickets.getResultList();
+        if(elements.isEmpty()) throw new ElementsNotFound();
+        return elements;
+    }
+
+    public Ticket getByIndex(List<Ticket> list,int index){
+
+     return list.get(index);
     }
 
 
