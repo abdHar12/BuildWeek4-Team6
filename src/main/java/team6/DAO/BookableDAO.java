@@ -50,4 +50,12 @@ public class BookableDAO {
         }
     }
 
+
+    //VIDIMAZIONE DEI BIGLIETTI PER UN VEICOLO
+
+    public void validationTicket (){
+
+
+
+    }
 }

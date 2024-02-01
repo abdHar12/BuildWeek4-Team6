@@ -33,13 +33,18 @@ public class Subscription extends Bookable {
         super(dateSell, placeSell);
         this.duration = duration;
         this.user = user;
-        this.valid = true;
+        this.valid=true;
         if (duration.equals(SubDuration.WEEKLY)) {
             this.dateExpiration = dateSell.plusWeeks(1);
             this.price = 30.0;
         } else if (duration.equals(SubDuration.MONTHLY)) {
             this.dateExpiration = dateSell.plusMonths(1);
             this.price = 60.0;
+        }
+
+        if(this.dateExpiration.isBefore(LocalDate.now())){
+
+            this.valid = false;
         }
 
     }

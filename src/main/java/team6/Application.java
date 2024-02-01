@@ -32,7 +32,6 @@ public class Application {
         //SETTO IL FAKER
         Faker faker = new Faker(Locale.ITALY);
 
-
         //CREO SELLER
         int nSeller = 3;
 
@@ -48,7 +47,7 @@ public class Application {
         int nUser = 20;
 
         for (int i = 1; i <= nUser; i++) {
-            User user = new User(faker.name().firstName(), faker.name().lastName(), LocalDate.of(faker.number().numberBetween(2021, 2024), faker.number().numberBetween(1, 12), faker.number().numberBetween(1, 30)));
+            User user = new User(faker.name().firstName(), faker.name().lastName(), LocalDate.of(faker.number().numberBetween(2024, 2025), faker.number().numberBetween(1, 12), faker.number().numberBetween(1, 30)));
             userDAO.save(user);
 
             Random random = new Random();
@@ -85,7 +84,6 @@ public class Application {
             Vehicle vehicleBus = new Vehicle(VehicleType.BUS);
             vehicleDAO.save(vehicleTram);
             vehicleDAO.save(vehicleBus);
-            System.out.println("ciaooooooooooooooooooooooooooooooooooo");
         }
 
 
@@ -103,6 +101,11 @@ public class Application {
             route.setVehicleList(new ArrayList<>(Arrays.asList(vehicleList.get(i), vehicleList.get(i + nRoutes))));
             routeDAO.save(route);
         }
+
+
+        //SETTO DEI TICKET CHE VIDIMO SU UN DETERMIANTO MEZZO
+//        Vehicle vehicleForTicket= vehicleDAO.findById(3);
+//        vehicleForTicket.setTickets(new ArrayList<>(Arrays.asList()));
 
 
 //        Maintenance maintenanceProvaDue = new Maintenance("cambio gomme due", LocalDate.now().minusDays(5), vehicleProva);
