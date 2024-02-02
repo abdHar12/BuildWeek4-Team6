@@ -7,6 +7,7 @@ import java.time.LocalDate;
 
 
 @Entity
+@NamedQuery(name = "getMaintenanceByVehicle", query = "SELECT m FROM Maintenance m WHERE m.vehicleMain = :vehicle")
 public class Maintenance {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,12 +30,13 @@ public class Maintenance {
 
     public Maintenance(String typeMaintenance, LocalDate dateOfStartMaintenance, Vehicle vehicle) {
         this.vehicleMain = vehicle;
-        if(vehicleMain.getState().equals(VehicleState.ACTIVE)) {
-        this.typeMaintenance = typeMaintenance;
-        this.dateOfStartMaintenance = dateOfStartMaintenance;
-        this.vehicleMain.setState(VehicleState.IN_MAINTENANCE);
+        if (vehicleMain.getState().equals(VehicleState.ACTIVE)) {
+            this.typeMaintenance = typeMaintenance;
+            this.dateOfStartMaintenance = dateOfStartMaintenance;
+            this.vehicleMain.setState(VehicleState.IN_MAINTENANCE);
         } else {
-            System.err.println("Il veicolo è già in manutenzione");}
+            System.err.println("Il veicolo è già in manutenzione");
+        }
 
     }
 
@@ -75,5 +77,14 @@ public class Maintenance {
         this.vehicleMain = vehicle;
     }
 
-
+    @Override
+    public String toString() {
+        return "Maintenance{" +
+                "id=" + id +
+                ", typeMaintenance='" + typeMaintenance + '\'' +
+                ", dateOfStartMaintenance=" + dateOfStartMaintenance +
+                ", dateOfEndMaintenance=" + dateOfEndMaintenance +
+                ", vehicleMain=" + vehicleMain +
+                '}';
+    }
 }

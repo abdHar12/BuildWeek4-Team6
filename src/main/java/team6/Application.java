@@ -19,7 +19,11 @@ public class Application {
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("u4bw");
     public static EntityManager em = emf.createEntityManager();
 
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_RESET = "\u001B[0m";
+
     public static void main(String[] args) {
+
 
         //TUTTI I DAO
         BookableDAO bookableDAO = new BookableDAO(em);
@@ -58,8 +62,8 @@ public class Application {
             try {
                 Bookable sub = new Subscription(LocalDate.of(faker.number().numberBetween(2024, 2024), faker.number().numberBetween(1, 2), faker.number().numberBetween(1, 30)), sellersDAO.findById(faker.number().numberBetween(1, nSeller * 2)), numRandom == 1 ? SubDuration.WEEKLY : SubDuration.MONTHLY, user);
                 bookableDAO.save(sub);
-            }catch (UnsupportedOperationException e){
-                System.err.println("La card per " + user.getName() + " " + user.getSurname() +" con id " +user.getCardNumber() + " è scaduta, rinnovala per poter attivare una subscription");
+            } catch (UnsupportedOperationException e) {
+                System.err.println("La card per " + user.getName() + " " + user.getSurname() + " con id " + user.getCardNumber() + " è scaduta, rinnovala per poter attivare una subscription");
 
             }
 
@@ -156,6 +160,51 @@ public class Application {
         //Maintenance maintenanceTre = new Maintenance("Cosmin lo vuole provare", LocalDate.of(2026, 1, 10), vehicleForTest);
         //maintenanceDAO.save(maintenanceDue);
 
+
+        //QUERY PER RICERCA BIGLIETTI E ABBONAMENTI IN LASSO DI TEMPO E VENDITORE
+        List<Bookable> listQuery = bookableDAO.getBookableByDateSeller(LocalDate.parse("2022-01-01"), LocalDate.parse("2022-12-30"), sellersDAO.findById(1));
+        System.out.println(ANSI_GREEN + "LISTA BIGLIETTI E ABBONAMENTI" + ANSI_RESET);
+        listQuery.forEach(System.out::println);
         System.out.println("Hello World!");
+
+
+        //SET NUOVE MANUTENZIONI PER CONTROLLO QUERY MANUTENZIONI
+        Vehicle vehicleOne = vehicleDAO.findById(1);
+        Vehicle vehicleTwo = vehicleDAO.findById(2);
+
+        Maintenance maintenanceOne = new Maintenance("Cambio gomme e cosmin", LocalDate.of(2024, 1, 10), vehicleOne);
+        maintenanceDAO.save(maintenanceOne);
+        maintenanceDAO.setDateOfEndMaintenance(maintenanceOne, LocalDate.now());
+        vehicleDAO.save(vehicleOne);
+
+
+        Maintenance maintenanceTwo = new Maintenance("Cambio gomme e ruane", LocalDate.of(2024, 1, 10), vehicleTwo);
+        maintenanceDAO.save(maintenanceTwo);
+        maintenanceDAO.setDateOfEndMaintenance(maintenanceTwo, LocalDate.now());
+        vehicleDAO.save(vehicleTwo);
+
+
+        Maintenance maintenanceOneTwo = new Maintenance("Cambio gomme e Antonio", LocalDate.of(2024, 1, 10), vehicleOne);
+        maintenanceDAO.save(maintenanceOneTwo);
+        maintenanceDAO.setDateOfEndMaintenance(maintenanceOne, LocalDate.now());
+        vehicleDAO.save(vehicleOne);
+
+        //QUERY MANUTENZIONI
+        List<Maintenance> listMainForQuery = maintenanceDAO.getMaintenanceByVehicle(vehicleOne);
+        System.out.println(ANSI_GREEN + "LISTA MANUTENZIONI" + ANSI_RESET);
+        listMainForQuery.forEach(System.out::println);
+
+        //SETTO NUOVI BIGLIETTI PER I NUOVI VEICOLI
+        List<Ticket> ticketUsingThree = new ArrayList<>(Arrays.asList(ticketsList.get(23), ticketsList.get(24), ticketsList.get(25)));
+        List<Ticket> ticketUsingFour = new ArrayList<>(Arrays.asList(ticketsList.get(31), ticketsList.get(32), ticketsList.get(33)));
+
+        vehicleOne.setTickets(ticketUsingThree, LocalDate.now());
+        vehicleTwo.setTickets(ticketUsingFour, LocalDate.parse("2022-12-10"));
+        vehicleDAO.save(vehicleOne);
+        vehicleDAO.save(vehicleTwo);
+
+        List<Ticket> ticketsStamped = bookableDAO.getTicketsUsedByDateVehicle(LocalDate.parse("2024-01-10"), LocalDate.parse("2024-12-10"), vehicleOne);
+        System.out.println(ANSI_GREEN + "LISTA TICKETS VIDIMATI" + ANSI_RESET);
+        ticketsStamped.forEach(System.out::println);
     }
 }

@@ -5,6 +5,7 @@ import team6.entities.Vehicle;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.TypedQuery;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -61,7 +62,15 @@ public List<Maintenance> getMaintencanceList (Vehicle vehicle){
 
 }
 
+//QUERY PER TROVARE MANUTENZIONI IN BASE AL VEICOLO
+    public List<Maintenance> getMaintenanceByVehicle(Vehicle vehicle) {
 
+        TypedQuery<Maintenance> query = em.createNamedQuery("getMaintenanceByVehicle", Maintenance.class);
+
+        query.setParameter("vehicle", vehicle);
+
+        return query.getResultList();
+    }
 
 
 }

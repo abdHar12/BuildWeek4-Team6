@@ -1,12 +1,15 @@
 package team6.DAO;
 
 import team6.abstractclasses.Bookable;
+import team6.abstractclasses.Sellers;
 import team6.entities.Ticket;
+import team6.entities.Vehicle;
 import team6.expetions.ElementsNotFound;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
+import java.time.LocalDate;
 import java.util.List;
 
 public class BookableDAO {
@@ -56,23 +59,40 @@ public class BookableDAO {
 
 
     public List<Ticket> getAllTickets() throws ElementsNotFound {
-        TypedQuery<Ticket> getAllTickets=em.createNamedQuery("getAllTickets", Ticket.class);
-        List<Ticket> elements= getAllTickets.getResultList();
-        if(elements.isEmpty()) throw new ElementsNotFound();
+        TypedQuery<Ticket> getAllTickets = em.createNamedQuery("getAllTickets", Ticket.class);
+        List<Ticket> elements = getAllTickets.getResultList();
+        if (elements.isEmpty()) throw new ElementsNotFound();
         return elements;
     }
 
-    public Ticket getByIndex(List<Ticket> list,int index){
+    public Ticket getByIndex(List<Ticket> list, int index) {
 
-     return list.get(index);
+        return list.get(index);
     }
 
+    // query per ricerca ticket e sub in data e luogo
 
-    //VIDIMAZIONE DEI BIGLIETTI PER UN VEICOLO
+    public List<Bookable> getBookableByDateSeller(LocalDate startDate, LocalDate endDate, Sellers seller) {
 
-    public void validationTicket (){
+        TypedQuery<Bookable> query = em.createNamedQuery("getBookableByDateSeller", Bookable.class);
 
+        query.setParameter("startDate", startDate);
+        query.setParameter("endDate", endDate);
+        query.setParameter("seller", seller);
 
+        return query.getResultList();
+    }
 
+//query per tickets
+
+    public List<Ticket> getTicketsUsedByDateVehicle(LocalDate startDate, LocalDate endDate, Vehicle vehicle) {
+
+        TypedQuery<Ticket> query = em.createNamedQuery("getTicketsUsedByDateVehicle", Ticket.class);
+
+        query.setParameter("startDate", startDate);
+        query.setParameter("endDate", endDate);
+        query.setParameter("vehicle", vehicle);
+
+        return (List<Ticket>) query.getResultList();
     }
 }

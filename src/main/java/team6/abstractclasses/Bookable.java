@@ -8,6 +8,11 @@ import java.time.LocalDate;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "type")
 @Table(name = "bookables")
+
+//query per ricerca in lasso di tempo e venditore
+@NamedQuery(name = "getBookableByDateSeller", query = "SELECT b FROM Bookable b WHERE b.placeSell = :seller AND b.dateSell BETWEEN :startDate AND :endDate ")
+
+
 public abstract class Bookable {
 
     @Id

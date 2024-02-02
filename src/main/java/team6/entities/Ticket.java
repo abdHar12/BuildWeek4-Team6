@@ -9,7 +9,10 @@ import java.time.LocalDate;
 
 @Entity
 @DiscriminatorValue("tickets")
-@NamedQuery(name="getAllTickets", query="SELECT t FROM Ticket t")
+@NamedQuery(name = "getAllTickets", query = "SELECT t FROM Ticket t")
+
+//query ricerca biglietti vidimati tempo e veicolo
+@NamedQuery(name = "getTicketsUsedByDateVehicle", query = "SELECT t FROM Ticket t WHERE t.vehicle = :vehicle AND t.dateValidation BETWEEN :startDate AND :endDate ")
 public class Ticket extends Bookable {
 
     @Column(name = "date_validation")
@@ -28,11 +31,10 @@ public class Ticket extends Bookable {
     }
 
     public Ticket(double price, LocalDate dateSell, Sellers placeSell) {
-        super( dateSell, placeSell);
+        super(dateSell, placeSell);
         this.valid = true;
-        this.price=price;
+        this.price = price;
     }
-
 
 
     public LocalDate getDateValidation() {
@@ -60,16 +62,13 @@ public class Ticket extends Bookable {
     }
 
 
-
-
-
     @Override
     public String toString() {
         return "Ticket{" +
                 ", id=" + id +
                 ", price=" + price +
                 ", dateSell=" + dateSell +
-                "dateValidation=" + dateValidation +
+                ", dateValidation=" + dateValidation +
                 ", placeSell=" + placeSell +
                 ", valid=" + valid +
                 "} ";
